@@ -11,7 +11,7 @@ body {
 
 .title {
   letter-spacing: 6px;
-  margin: 150px 10px 30px 10px;
+  /* margin: 150px 10px 30px 10px; */
   /* padding: 30px; */
   text-align: center;
   font-weight: 900;
@@ -61,6 +61,18 @@ body {
   transition: background-color 0.5s;
 }
 
+.boardTilePlayerX {
+  background: url(icons/X.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.boardTilePlayerO {
+  background: url(icons/O.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .boardTile:hover {
   background-color: rgb(40, 40, 40);
 }
@@ -75,10 +87,12 @@ body {
   align-items: center;
   position: absolute;
   top: 73%;
+  top: 84%;
   width: 100%;
 }
 
 .reset {
+  position: absolute;
   justify-content: center;
   background-color: #f6f6f6;
   color: #171717;
