@@ -1,6 +1,8 @@
 import numpy as np
-from pyrsistent import b
+import sys, os
+import copy
 
+from pyrsistent import b
 
 board = np.array([
     ["1","2","3"],
@@ -23,10 +25,15 @@ def selectPosition(board, position:int, player:str):
     if position in range(0,10,1):
         row = int((position-1) /3)
         column = (position-1)%3
+        if board[row][column] == "X" or board[row][column] == "O":
+            print("\nInvalid Position\n")
+            return False
         board[row,column] = player
+        return True
+
     else:
-        print("\nInvalid Position\n")
-        return
+        print("Out of range selection")
+        return False 
 
 def has_won(board, player:str):
     win = None
@@ -59,10 +66,12 @@ def has_won(board, player:str):
 
     #Final Win Check 
     if win:
-        print(f"{player} has won!")
+        # print(f"{player} has won!")
+        return True
     else:
-        print(f"{player} has not won.")
-    return
+        # print(f"{player} has not won.")
+        pass
+    return False
             
 
 def availableMoves(board):
@@ -79,52 +88,137 @@ def isTie(board):
     else:
         return False
 
+def gameEnded(board):
+    return has_won(board,"X") or has_won(board,"O") or len(availableMoves(board)) == 0
+
 def evaluateBoard(board):
-    if not has_won(board,"X") and not has_won(board,"O") and len(availableMoves(board)) == 0:
-        return True
-    else:
-        return False
+    if has_won(board,"X"):
+        # print(f"X has won the game!")
+        return 1
+    if has_won(board,"O"):
+        # print(f"O has won the game!")
+        return -1
+    if len(availableMoves(board)) == 0:
+        # print(f"The game is a tie!")
+        return 0
 
 def minimax(board, is_maximizing):
-    
-    if is_maximizing:
-        value = 1
-        player = "X"
-    else:
-        player = "O"
-        value = -1
 
     # Base Case
-    if has_won(board, "X") or has_won(board, "O") or isTie(board):
-        return value
+    if gameEnded(board):
+        return [evaluateBoard(board), ""]
 
-    for move in availableMoves:
+    # # Maximizing Player
+    if is_maximizing:
+        bestValue = -float("Inf")
+        bestMove = ""
+
+        for move in availableMoves(board):
+            boardCopy = copy.deepcopy(board)
+            selectPosition(boardCopy, int(move), "X")
+
+            hypotheticalValue = minimax(boardCopy, False)[0]
+
+            if hypotheticalValue > bestValue:
+                bestValue = hypotheticalValue
+                bestMove = move
+        return [bestValue,int(bestMove)]
+    
+
+    # Minimizing Player
+    else:
+        bestValue = float("Inf")
+        bestMove = ""
+
+        for move in availableMoves(board):
+            boardCopy = copy.deepcopy(board)
+            selectPosition(boardCopy, int(move), "O")
+
+            hypotheticalValue = minimax(boardCopy, True)[0]
+
+            if hypotheticalValue < bestValue:
+                bestValue = hypotheticalValue
+                bestMove = move
+        
+        return [bestValue,int(bestMove)]
 
 
-        best_value = value
-        best_move = move
 
-print(f'{board} \n')
-has_won(board,"X")
+def tictactoeGame():
+    while not gameEnded(board):
 
-selectPosition(board,1,"X")
-print(f'{board} \n')
-has_won(board,"X")
+        validMove = False
+        while not validMove:        
+            userMove = None
 
-selectPosition(board,2,"O")
-print(f'{board} \n')
-has_won(board,"X")
 
-selectPosition(board,5,"X")
-print(f'{board} \n')
-has_won(board,"X")
+            time = os.path.getmtime('data.txt')
+            read = False
+            while not read :
+                if (time != os.path.getmtime('data.txt')):
+                    with open('data.txt', 'r') as f:
+                        
+                        userMove = f.read()
+                        print(userMove)
+                        
+                        print(userMove[0])
+                        if selectPosition(board,int(userMove[0]) + 1, "O"):
+                            validMove = True
+                        print("\n", board)
+                        
+                        print(f"Read UI Input: {userMove}")
+                        read = True
 
-selectPosition(board,6,"O")
-print(f'{board} \n')
-has_won(board,"X")
+                    time = os.path.getmtime('data.txt')
 
-selectPosition(board,9,"X")
-print(f'{board} \n')
-has_won(board,"X")
+        # validMove = False
+        # while not validMove:
+        #     userMove = int(input("Select a tile: "))
+        #     if selectPosition(board,userMove, "O"):
+        #         validMove = True
+        #     print("\n", board)
+        
+        if gameEnded(board):
+            break
+
+        print("\nAI's Turn")
+
+        aiMove = minimax(board,True)[1]
+        if selectPosition(board,aiMove, "X"):
+            validMove = True
+        print("\n", board)
+        
+
+
+tictactoeGame()
+    
+
+# validMove = False
+# while not validMove:
+#     aiMove = int(input("Select a tile: "))
+#     if selectPosition(board,aiMove, "X"):
+#         validMove = True
+#     print("\n", board)
+    
 
 # print(isTie(board))
+# validMove = False
+#     while not validMove:
+#         userMove = int(input("\nSelect a tile: "))
+#         if selectPosition(board,userMove, "O"):
+#             validMove = True
+#         print("\n", board)
+
+
+
+
+
+# selectPosition(board,1, "O")
+# selectPosition(board,7, "X")
+# selectPosition(board,5, "X")
+# selectPosition(board,2, "X")
+# print("\n",board)
+
+# # selectPosition(board, minimax(board,True)[1], "X")
+# print(minimax(board,True)[1])
+# print("\n",board)

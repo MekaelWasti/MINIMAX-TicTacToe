@@ -50,7 +50,7 @@ function fetchData(tileIndex) {
       Accept: "application/json",
     },
     // Strigify the payload into JSON:
-    body: JSON.stringify(tileIndex),
+    body: JSON.stringify(String(tileIndex)),
   })
     .then((res) => {
       if (res.ok) {

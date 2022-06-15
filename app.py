@@ -5,11 +5,13 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 #Set up Flask to bypass CORS at the front end:
-cors = CORS(app)
+CORS(app)
+# cors = CORS(app)
+
 #Run the app:
-if __name__ == "__main__":
+# if __name__ == "__main__":
     #  app.run(port = 5500)
-     app.run()
+    #  app.run()
 
 
 
@@ -17,8 +19,12 @@ if __name__ == "__main__":
 @app.route("/receiver", methods=["POST"])
 def postME():
    data = request.get_json()
-   data = jsonify(data)
+#    data = jsonify(data)
    print(data)
+
+   with open("data.txt", 'w') as f:
+      f.write(data)
+
    return data
 if __name__ == "__main__": 
    app.run(debug=True)
