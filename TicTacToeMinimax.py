@@ -1,6 +1,7 @@
 import numpy as np
 import sys, os
 import copy
+import ast
 
 from pyrsistent import b
 
@@ -169,7 +170,6 @@ def tictactoeGame():
                         print(f"Read UI Input: {userMove}")
                         read = True
 
-                    time = os.path.getmtime('data.txt')
 
         # validMove = False
         # while not validMove:
@@ -187,6 +187,12 @@ def tictactoeGame():
         if selectPosition(board,aiMove, "X"):
             validMove = True
         print("\n", board)
+
+        with open("data.txt", 'w') as f:
+            f.write(str(aiMove))
+
+        time = os.path.getmtime('data.txt')
+
         
 
 

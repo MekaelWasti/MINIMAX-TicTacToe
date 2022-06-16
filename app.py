@@ -23,7 +23,7 @@ def postME():
    print(data)
 
    with open("data.txt", 'w') as f:
-      f.write(data)
+      f.write(str(data))
 
    return data
 if __name__ == "__main__": 

@@ -1,10 +1,11 @@
 var playerTurn = ["X", "O"];
 var player = 0;
+gameEnd = false;
 
 window.addEventListener("DOMContentLoaded", () => {
   const tiles = Array.from(document.querySelectorAll(".boardTile"));
 
-  console.log(tiles[0]);
+  console.log("TILE ARRAY", tiles);
 
   tiles.forEach((tile, index) => {
     tile.addEventListener("click", () => userAction(tile, index));
@@ -50,7 +51,12 @@ function fetchData(tileIndex) {
       Accept: "application/json",
     },
     // Strigify the payload into JSON:
-    body: JSON.stringify(String(tileIndex)),
+    // body: JSON.stringify(String(tileIndex)),
+    body: JSON.stringify({
+      UserMove: String(tileIndex),
+      AIMove: "",
+      GameEnded: gameEnd,
+    }),
   })
     .then((res) => {
       if (res.ok) {
@@ -67,3 +73,8 @@ function fetchData(tileIndex) {
 
   console.log(tileIndex);
 }
+
+
+// while (!gameEnd) {
+//   console.log("User Select A Tile");
+// }
