@@ -147,7 +147,7 @@ def minimax(board, is_maximizing):
 
 def tictactoeGame():
     while not gameEnded(board):
-
+        gameStatDict = {}
         validMove = False
         while not validMove:        
             userMove = None
@@ -159,15 +159,16 @@ def tictactoeGame():
                 if (time != os.path.getmtime('data.txt')):
                     with open('data.txt', 'r') as f:
                         
-                        userMove = f.read()
-                        print(userMove)
+                        gameStatDict = ast.literal_eval(f.read())
+                        print(gameStatDict)
                         
-                        print(userMove[0])
-                        if selectPosition(board,int(userMove[0]) + 1, "O"):
+                        
+                        print(gameStatDict["UserMove"])
+                        if selectPosition(board,int(gameStatDict["UserMove"]), "O"):
                             validMove = True
                         print("\n", board)
                         
-                        print(f"Read UI Input: {userMove}")
+                        print(f'Read UI Input: {gameStatDict["UserMove"]}')
                         read = True
 
 
@@ -179,19 +180,28 @@ def tictactoeGame():
         #     print("\n", board)
         
         if gameEnded(board):
+            gameStatDict["GameEnded"] = True
+            with open("data.txt", 'w') as f:
+                f.write(str(gameStatDict))
             break
 
         print("\nAI's Turn")
 
-        aiMove = minimax(board,True)[1]
-        if selectPosition(board,aiMove, "X"):
+        gameStatDict["AIMove"] = minimax(board,True)[1]
+        if selectPosition(board,gameStatDict["AIMove"], "X"):
             validMove = True
         print("\n", board)
 
         with open("data.txt", 'w') as f:
-            f.write(str(aiMove))
+            f.write(str(gameStatDict))
 
         time = os.path.getmtime('data.txt')
+    
+        if gameEnded(board):
+                gameStatDict["GameEnded"] = True
+                with open("data.txt", 'w') as f:
+                    f.write(str(gameStatDict))
+
 
         
 

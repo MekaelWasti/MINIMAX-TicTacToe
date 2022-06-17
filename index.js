@@ -33,6 +33,8 @@ const userAction = (tile, index) => {
   }
 
   fetchData(index);
+  AIMove = getDict();
+  console.log(`RESPONSE::::: ${AIMove}`);
 };
 
 const resetGame = (tiles) => {
@@ -53,7 +55,7 @@ function fetchData(tileIndex) {
     // Strigify the payload into JSON:
     // body: JSON.stringify(String(tileIndex)),
     body: JSON.stringify({
-      UserMove: String(tileIndex),
+      UserMove: String(tileIndex + 1),
       AIMove: "",
       GameEnded: gameEnd,
     }),
@@ -67,13 +69,51 @@ function fetchData(tileIndex) {
     })
     .then((jsonResponse) => {
       // Log the response data in the console
-      console.log(jsonResponse);
+      // console.log(jsonResponse);
     })
     .catch((err) => console.error(err));
 
   console.log(tileIndex);
 }
 
+async function getDict() {
+  const response = await fetch("http://127.0.0.1:5000/sender", {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const text = await response.text();
+  // const text = await response.json();
+  console.log(text);
+
+  // console.log(JSON.parse(text));
+}
+
+// async function recieveData() {
+//   let result = await fetch("http://127.0.0.1:5000/sender", {
+//     headers: {
+//       "Content-Type": "application/json",
+//       Accept: "application/json",
+//     },
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log(data);
+//       return data;
+//     });
+//   console.log("RESULT");
+//   console.log(result);
+// }
+
+// async function fetchYER() {
+//   let response = await fetch("http://127.0.0.1:5000/sender");
+//   let data = await response.json();
+//   data = JSON.stringify(data);
+//   data = JSON.parse(data);
+//   console.log(data);
+//   return data.text;
+// }
 
 // while (!gameEnd) {
 //   console.log("User Select A Tile");
