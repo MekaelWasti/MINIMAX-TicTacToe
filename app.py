@@ -3,11 +3,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 import json
+import time
 
 
 
 # <strong>#Set up Flaskstrong>:
-
+time1 = -float("Inf")
 app = Flask(__name__)
 #Set up Flask to bypass CORS at the front end:
 CORS(app)
@@ -31,8 +32,12 @@ def postME():
    with open("data.txt", 'w') as f:
       f.write(str(data))
    
+   global time1
+   time1 = os.path.getmtime('data2.txt')
    with open("data2.txt", 'w') as f:
       f.write("Modify Check File")
+      print(time1)
+
 
    return data
 
@@ -41,11 +46,16 @@ def postME():
 # Send Data
 @app.route("/sender", methods=["GET", "POST"])
 def sendME():
-   time = os.path.getmtime('data.txt')
    read = False
+   time.sleep(5.0)
    while not read:
-      if time != os.path.getmtime('data.txt'):
-         print(f"YERR  {time}")
+      # exec(open('fileWatch.py').read())
+      # time1 = os.path.getmtime('data2.txt')
+      # print(time1)
+
+
+      # if time1 != os.path.getmtime('data2.txt'):
+         print(f"YERR  {time1}")
          with open("data.txt", 'r') as f:
             data = str(f.readline())
             print("YER", data)

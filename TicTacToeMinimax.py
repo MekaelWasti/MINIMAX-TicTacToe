@@ -264,6 +264,14 @@ def tictactoeGame():
             gameStatDict["GameEnded"] = True
             with open("data.txt", 'w') as f:
                 f.write(str(gameStatDict))
+            
+            # board = np.array([
+            # ["1","2","3"],
+            # ["4","5","6"],
+            # ["7","8","9"],
+            # ])
+            # tictactoeGame()
+            
             break
 
         print("\nAI's Turn")
@@ -276,6 +284,9 @@ def tictactoeGame():
         with open("data.txt", 'w') as f:
             f.write(str(gameStatDict))
 
+        with open("data2.txt", 'w') as f:
+         f.write("Modify Check File")
+
 
         # time = os.path.getmtime('data.txt')
     
@@ -283,6 +294,8 @@ def tictactoeGame():
                 gameStatDict["GameEnded"] = True
                 with open("data.txt", 'w') as f:
                     f.write(str(gameStatDict))
+
+                # tictactoeGame()
 
 
         
