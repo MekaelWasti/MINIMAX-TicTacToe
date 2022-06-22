@@ -58,6 +58,7 @@ window.addEventListener("DOMContentLoaded", () => {
     fetch("http://127.0.0.1:5000/receiver", {
       method: "POST",
       headers: {
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
         "Content-type": "application/json",
         Accept: "application/json",
       },

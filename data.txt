@@ -1,1 +1,1 @@
-{'UserMove': '7', 'AIMove': '', 'GameEnded': True}
+{'UserMove': '2', 'AIMove': '', 'GameEnded': False}
